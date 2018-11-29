@@ -49,6 +49,7 @@ export default {
     data: Array
   },
   methods: {
+    // 初始化选择类别
     init() {
       let _this = this
       this.data.forEach((item,i) => {
@@ -69,6 +70,7 @@ export default {
         //
       })
     },
+    // 初始化sku 数组
     addSku(item){
       let _this = this 
       let id         = item.id
@@ -109,11 +111,13 @@ export default {
         }
       })
       item.selected = !item.selected // 当前状态置为反
+      // 添加用户选择的列表
       if(item.selected){
         this.userList['type_' + index] = item.name
       }else{
         this.userList['type_' + index] = ''
       }
+      // 获取选择的集合
       let list = []
       this.typeList.forEach((item,i) => {
         item.forEach((item,j)=>{
@@ -122,17 +126,19 @@ export default {
           }
         })
       })
-      // console.log(list)
+      // 获取 SKU 对应的结果集
       this.result = this.sku_result[list.join(';')] === undefined?{}:this.sku_result[list.join(';')]
       this.updateType()
     },
     updateType() {
       let _this = this
-      let length = this.typeList.length
+      let length = this.typeList.length // 可选类别的长度
+      // 双层循环用来做一一对应
       this.typeList.forEach((item,i)=>{
         item.forEach((val,k)=>{
           let list = []
           for(let j =0;j<length;j++){
+            // 简单的讲就是 如果用户选择了，那么就用用户选择的，当前循环的是哪行数据，哪行的数据就随着外层循环进行变动
             if(!!_this.userList['type_' + j] && i!==j){
               list.push(_this.userList['type_' + j])
             }
@@ -142,17 +148,13 @@ export default {
             
           }
           console.log(_this.sku_result[list.join(';')],list.join(';'))
+          // 简单的sku 判断，如果存在数据就 给false 如果没有数据就给true
           if(_this.sku_result[list.join(';')] === undefined){
             val.disabled = true
           }else{
             val.disabled = false
           }
-
-          
         })
-        
-
-        
       })
 
       // 重新赋值 刷新节点
