@@ -103,6 +103,7 @@ export default {
      * @return {[type]}
      */
     checkType(item,index,index2){
+      if(item.disabled) return  // 本版本 灰色的不可点击。。。。
       // console.log(item.name,index,index2)
       // 先将当前行全部取消选择
       this.typeList[index].forEach((item,i)=>{
